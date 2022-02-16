@@ -1,10 +1,28 @@
-import express, { Express } from 'express';
+import { ApolloServer, gql } from 'apollo-server';
+import { TypeDefs } from './types';
+require('./config/db.config')
 
-const app: Express = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello world');
+const typeDefs = gql`
+  type Query {
+    sayHi: ${TypeDefs.String}
+  }
+`;
+
+const resolvers = {
+  Query: {
+    sayHi: (): string => 'Hello world !!!',
+  },
+};
+
+const server: ApolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
 });
 
 const port = 8080;
-app.listen(port, () => console.log(`Listening on port ${port}`));
+
+
+server.listen(port).then(({ url }: { url: string }) => {
+  console.log(`🚀  Server ready at ${url}`);
+});

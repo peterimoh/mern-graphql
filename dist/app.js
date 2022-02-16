@@ -1,13 +1,24 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const app = (0, express_1.default)();
-app.get('/', (req, res) => {
-    res.send('Hello world');
+const apollo_server_1 = require("apollo-server");
+const types_1 = require("./types");
+require('./config/db.config');
+const typeDefs = (0, apollo_server_1.gql) `
+  type Query {
+    sayHi: ${types_1.TypeDefs.String}
+  }
+`;
+const resolvers = {
+    Query: {
+        sayHi: () => 'Hello world !!!',
+    },
+};
+const server = new apollo_server_1.ApolloServer({
+    typeDefs,
+    resolvers,
 });
 const port = 8080;
-app.listen(port, () => console.log(`Listening on port ${port}`));
+server.listen(port).then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
+});
 //# sourceMappingURL=app.js.map
