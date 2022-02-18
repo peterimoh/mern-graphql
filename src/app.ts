@@ -1,19 +1,9 @@
-import { ApolloServer, gql } from 'apollo-server';
-import { TypeDefs } from './types';
-require('./config/db.config')
+import { ApolloServer } from 'apollo-server';
+import { typeDefs } from './graphql';
+import resolvers from './graphql/resolver/';
+require('dotenv').config();
+require('./config/db.config');
 
-
-const typeDefs = gql`
-  type Query {
-    sayHi: ${TypeDefs.String}
-  }
-`;
-
-const resolvers = {
-  Query: {
-    sayHi: (): string => 'Hello world !!!',
-  },
-};
 
 const server: ApolloServer = new ApolloServer({
   typeDefs,
@@ -21,7 +11,6 @@ const server: ApolloServer = new ApolloServer({
 });
 
 const port = 8080;
-
 
 server.listen(port).then(({ url }: { url: string }) => {
   console.log(`🚀  Server ready at ${url}`);
