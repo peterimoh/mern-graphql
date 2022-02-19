@@ -39,11 +39,14 @@ const typeDefs = gql`
     likes: [Likes]!
     username: String
     user: String
+    likeCount: Int!
+    commentCount: Int!
   }
 
   type Comment{
     id:  ID!
     body:  ${TypeDefs.String}
+    username: ${TypeDefs.String}
   }
 
   type Likes{

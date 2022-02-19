@@ -41,11 +41,14 @@ const typeDefs = (0, apollo_server_1.gql) `
     likes: [Likes]!
     username: String
     user: String
+    likeCount: Int!
+    commentCount: Int!
   }
 
   type Comment{
     id:  ID!
     body:  ${TypeDefs.String}
+    username: ${TypeDefs.String}
   }
 
   type Likes{
