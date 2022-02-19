@@ -11,6 +11,7 @@ require('./config/db.config');
 const server = new apollo_server_1.ApolloServer({
     typeDefs: graphql_1.typeDefs,
     resolvers: resolver_1.default,
+    context: ({ req }) => ({ req }),
 });
 const port = 8080;
 server.listen(port).then(({ url }) => {

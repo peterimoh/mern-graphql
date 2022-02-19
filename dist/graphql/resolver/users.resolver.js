@@ -26,9 +26,9 @@ function validatePassword(password, hashedPassword) {
     });
 }
 const userResolver = {
-    Query: {
-        sayHi: () => 'Hello',
-    },
+    // Query: {
+    //   sayHi: () => 'Hello',
+    // },
     Mutation: {
         register(_, { registerInput: { username, email, password } }) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -81,7 +81,7 @@ const userResolver = {
                 const token = JWT.sign({ usr }, process.env.JWT_SECRET, {
                     expiresIn: '1h',
                 });
-                return { token };
+                return { token, id: user._id };
             });
         },
     },

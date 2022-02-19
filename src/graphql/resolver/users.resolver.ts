@@ -13,9 +13,9 @@ async function validatePassword(password, hashedPassword){
 }
 
 const userResolver = {
-  Query: {
-    sayHi: () => 'Hello',
-  },
+  // Query: {
+  //   sayHi: () => 'Hello',
+  // },
 
   Mutation: {
     async register(_, { registerInput: { username, email, password } }) {
@@ -76,7 +76,7 @@ const userResolver = {
       const token = JWT.sign({ usr }, process.env.JWT_SECRET, {
         expiresIn: '1h',
       });
-      return { token };
+      return { token, id: user._id };
     },
   },
 };

@@ -8,6 +8,7 @@ require('./config/db.config');
 const server: ApolloServer = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => ({ req }),
 });
 
 const port = 8080;
