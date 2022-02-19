@@ -1,4 +1,4 @@
-import { AuthenticationError, UserInputError } from 'apollo-server';
+import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import Mongoose, { Types } from 'mongoose';
 import { Post } from '../../models/Post.model';
 const checkAuth = require('../../utils/isAuthenticated');
@@ -26,14 +26,14 @@ const postResolver = {
       const user: any = checkAuth(context);
       const { usr } = user;
 
-      if (body.trim() === "") {
-        throw new Error("Post Body Cannot be Empty")
+      if (body.trim() === '') {
+        throw new Error('Post Body Cannot be Empty');
       }
 
       const newPost = new Post({
         body,
         user: usr.id,
-        username: usr.username, 
+        username: usr.username,
         createdAt: new Date().toISOString(),
       });
 
@@ -113,12 +113,11 @@ const postResolver = {
 
       const post: any = await Post.findById(postID);
       console.log(usr);
-      
 
       if (post) {
         if (post.likes.find((l) => l.username === usr.username)) {
           // post already liked, unlike it
-         post.likes = post.likes.filter((el) => el.username !== usr.username);
+          post.likes = post.likes.filter((el) => el.username !== usr.username);
         } else {
           // post not liked yet, like
           post.likes.push({
@@ -128,13 +127,12 @@ const postResolver = {
         }
         await post.save();
         return post;
-      } else throw new UserInputError('Post Not Found!', {
-        error: {
-          message: 'Post Not Found!',
-        },
-      });
-        
-      
+      } else
+        throw new UserInputError('Post Not Found!', {
+          error: {
+            message: 'Post Not Found!',
+          },
+        });
     },
   },
 };

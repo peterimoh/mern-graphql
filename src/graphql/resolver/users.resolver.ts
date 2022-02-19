@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const JWT = require('jsonwebtoken');
-import { UserInputError, AuthenticationError } from 'apollo-server';
+import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { User } from '../../models/User.model';
 
 //encrypt password

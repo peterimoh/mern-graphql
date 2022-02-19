@@ -1,18 +1,37 @@
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from 'apollo-server-express';
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import express from 'express';
+import http from 'http';
+import morgan from 'morgan';
 import { typeDefs } from './graphql';
 import resolvers from './graphql/resolver/';
 require('dotenv').config();
 require('./config/db.config');
 
+async function startApolloServer(typeDefs, resolvers) {
+  // Required logic for integrating with Express
+  const app = express();
+  const httpServer = http.createServer(app);
 
-const server: ApolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: ({ req }) => ({ req }),
-});
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
 
-const port = 8080;
+  app.use(morgan('dev'));
 
-server.listen(port).then(({ url }: { url: string }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+  await server.start();
+  server.applyMiddleware({
+    app,
+    path: '/',
+  });
+
+  const port = 8080;
+  await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
+  console.log(
+    `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
+  );
+}
+
+startApolloServer(typeDefs, resolvers);

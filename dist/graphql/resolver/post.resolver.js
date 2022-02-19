@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postResolver = void 0;
-const apollo_server_1 = require("apollo-server");
+const apollo_server_express_1 = require("apollo-server-express");
 const Post_model_1 = require("../../models/Post.model");
 const checkAuth = require('../../utils/isAuthenticated');
 const postResolver = {
@@ -36,8 +36,8 @@ const postResolver = {
             return __awaiter(this, void 0, void 0, function* () {
                 const user = checkAuth(context);
                 const { usr } = user;
-                if (body.trim() === "") {
-                    throw new Error("Post Body Cannot be Empty");
+                if (body.trim() === '') {
+                    throw new Error('Post Body Cannot be Empty');
                 }
                 const newPost = new Post_model_1.Post({
                     body,
@@ -58,7 +58,7 @@ const postResolver = {
                 if (!post)
                     throw new Error('Post not found!');
                 if (usr.id !== post.user._id.toString())
-                    throw new apollo_server_1.AuthenticationError('You are not authorized to delete this post!');
+                    throw new apollo_server_express_1.AuthenticationError('You are not authorized to delete this post!');
                 const deleted = yield Post_model_1.Post.findByIdAndDelete(id);
                 if (!deleted)
                     throw new Error('Post not found!');
@@ -69,7 +69,7 @@ const postResolver = {
             const user = checkAuth(context);
             const { usr } = user;
             if (body.trim() === '')
-                throw new apollo_server_1.UserInputError('Comment Cannot be Empty!', {
+                throw new apollo_server_express_1.UserInputError('Comment Cannot be Empty!', {
                     error: {
                         body: 'Comment Cannot be Empty!',
                     },
@@ -97,11 +97,11 @@ const postResolver = {
                     return post;
                 }
                 else {
-                    throw new apollo_server_1.AuthenticationError('You are not authorized to delete this comment!');
+                    throw new apollo_server_express_1.AuthenticationError('You are not authorized to delete this comment!');
                 }
             }
             else {
-                throw new apollo_server_1.UserInputError('Post not found!');
+                throw new apollo_server_express_1.UserInputError('Post not found!');
             }
         }),
         likePost: (_, { postID }, context) => __awaiter(void 0, void 0, void 0, function* () {
@@ -124,7 +124,7 @@ const postResolver = {
                 return post;
             }
             else
-                throw new apollo_server_1.UserInputError('Post Not Found!', {
+                throw new apollo_server_express_1.UserInputError('Post Not Found!', {
                     error: {
                         message: 'Post Not Found!',
                     },

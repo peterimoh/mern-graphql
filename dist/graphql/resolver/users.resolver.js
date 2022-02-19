@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userResolver = void 0;
 const bcrypt = require('bcryptjs');
 const JWT = require('jsonwebtoken');
-const apollo_server_1 = require("apollo-server");
+const apollo_server_express_1 = require("apollo-server-express");
 const User_model_1 = require("../../models/User.model");
 //encrypt password
 function hashPassword(password) {
@@ -36,7 +36,7 @@ const userResolver = {
                 const created = new Date().toDateString();
                 yield User_model_1.User.findOne({ email }).then((user) => {
                     if (user) {
-                        throw new apollo_server_1.UserInputError('User Already Exist!', {
+                        throw new apollo_server_express_1.UserInputError('User Already Exist!', {
                             error: {
                                 email: 'User Already Exist!',
                             },
@@ -61,14 +61,14 @@ const userResolver = {
             return __awaiter(this, void 0, void 0, function* () {
                 const user = yield User_model_1.User.findOne({ email });
                 if (!user)
-                    throw new apollo_server_1.AuthenticationError('User does not exist!', {
+                    throw new apollo_server_express_1.AuthenticationError('User does not exist!', {
                         error: {
                             email: 'User does not exist!',
                         },
                     });
                 const compare_pass = yield validatePassword(password, user.password);
                 if (!compare_pass)
-                    throw new apollo_server_1.AuthenticationError('Invalid Password!', {
+                    throw new apollo_server_express_1.AuthenticationError('Invalid Password!', {
                         error: {
                             password: 'Invalid Password!',
                         },

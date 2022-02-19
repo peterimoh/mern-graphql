@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const apollo_server_1 = require("apollo-server");
+const apollo_server_express_1 = require("apollo-server-express");
 module.exports = (context) => {
     const authHeader = context.req.headers.authorization;
     if (authHeader) {
@@ -16,11 +16,11 @@ module.exports = (context) => {
                 return payload;
             }
             catch (err) {
-                throw new apollo_server_1.AuthenticationError('Your session expired. Sign in again.');
+                throw new apollo_server_express_1.AuthenticationError('Your session expired. Sign in again.');
             }
         }
         throw new Error('Authentication token must be "Bearer [token]"');
     }
-    throw new apollo_server_1.AuthenticationError('Authorization Header not found');
+    throw new apollo_server_express_1.AuthenticationError('Authorization Header not found');
 };
 //# sourceMappingURL=isAuthenticated.js.map
